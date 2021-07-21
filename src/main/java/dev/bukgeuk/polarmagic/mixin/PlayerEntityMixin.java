@@ -1,10 +1,12 @@
 package dev.bukgeuk.polarmagic.mixin;
 
+import dev.bukgeuk.polarmagic.PolarMagic;
 import dev.bukgeuk.polarmagic.ext.PlayerEntityExt;
 import dev.bukgeuk.polarmagic.util.MagicData;
 import dev.bukgeuk.polarmagic.util.MagicDataTable;
 import dev.bukgeuk.polarmagic.util.aQueueData;
 import dev.bukgeuk.polarmagic.util.GraphKt;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,8 +35,30 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     private Double manaRecoveryAmount = null;
     private final Queue<aQueueData> aQueue = new LinkedList<>();
 
+    private boolean init = false;
+
     protected PlayerEntityMixin(EntityType<LivingEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    private boolean error() {
+        return (maxManaAmount == null || currentManaAmount == null || magicLevel == null || magicCurrentExp == null || magicMaxExp == null || maxManaAmount == 0.0 || magicLevel == 0.0 || magicMaxExp == 0.0);
+    }
+
+    private boolean isClient() {
+        return (this.getClass().getName().equals("net.minecraft.client.network.ClientPlayerEntity"));
+    }
+
+    private void reset() {
+        PolarMagic.Companion.getLogger().warn("Reset " + this.getDisplayName().getString() + "'s MagicData to default");
+
+        this.maxManaAmount = 100.0;
+        this.currentManaAmount = 0.0;
+        this.magicLevel = 1;
+        this.magicCurrentExp = 0.0;
+        this.magicMaxExp = 100.0;
+        this.manaRecoveryAmount = 10.0;
+        this.aCurrentManaAmount = 0.0;
     }
 
     @Override
@@ -51,12 +75,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
             // (at^3)/3 = v
             double a = GraphKt.getGraphA(v, aTick);
 
-            System.out.println("v: " + v + ", a: " + a);
-
             // (a(t_2-t)^3-a(t_1-t)^3)/3 = s
             for (int i = 1; i <= aTick; i++) {
                 double s = GraphKt.getGraphS(a, i, aTick);
-                System.out.println("s" + i + ": " + s);
+
                 aQueue.add(new aQueueData(true, s));
             }
 
@@ -66,12 +88,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
             // (at^3)/3 = v
             double a = GraphKt.getGraphA(v, aTick);
 
-            System.out.println("v: " + v + ", a: " + a);
-
             // (a(t_2-t)^3-a(t_1-t)^3)/3 = s
             for (int i = 1; i <= aTick; i++) {
                 double s = GraphKt.getGraphS(a, i, aTick);
-                System.out.println("s" + i + ": " + s);
+
                 aQueue.add(new aQueueData(false, s));
             }
         }
@@ -128,6 +148,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
         manaRecoveryAmount = nbt.getDouble("manaRecoveryAmount");
 
         aCurrentManaAmount = currentManaAmount;
+
+        if (error() && !isClient()) reset();
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
@@ -171,5 +193,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 
         if (maxManaAmount != null && currentManaAmount != null && magicLevel != null && magicCurrentExp != null && magicMaxExp != null)
             MagicDataTable.setData(this.uuid, new MagicData(maxManaAmount, currentManaAmount, magicLevel, magicCurrentExp, magicMaxExp, aCurrentManaAmount, manaRecoveryAmount));
+
+        if (!init) {
+            if (error() && !isClient())
+                reset();
+
+            init = true;
+        }
     }
 }

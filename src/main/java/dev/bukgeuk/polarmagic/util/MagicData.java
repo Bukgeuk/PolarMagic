@@ -1,8 +1,5 @@
 package dev.bukgeuk.polarmagic.util;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class MagicData {
     public Double maxManaAmount;
     public Double currentManaAmount;

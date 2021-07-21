@@ -3,8 +3,14 @@ import dev.bukgeuk.polarmagic.register.CommandRegister
 import dev.bukgeuk.polarmagic.register.ItemRegister
 import dev.bukgeuk.polarmagic.register.PotionRegister
 import net.fabricmc.api.ModInitializer
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class PolarMagic: ModInitializer {
+    companion object {
+        val logger: Logger = LogManager.getLogger(PolarMagic::class)
+    }
+
     override fun onInitialize() {
         ItemRegister()
 
