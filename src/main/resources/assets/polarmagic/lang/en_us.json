@@ -1,0 +1,26 @@
+{
+  "itemGroup.polarmagic.magic": "Magic",
+  "item.polarmagic.wand": "Apprentice Wand",
+  "item.polarmagic.wand.tooltip_1": "Wand for beginners.",
+  "item.polarmagic.wand.tooltip_2": "Free.",
+  "item.polarmagic.wand2_fire": "Expert Wand (Fire)",
+  "item.polarmagic.wand2_water": "Expert Wand (Water)",
+  "item.polarmagic.wand2_earth": "Expert Wand (Earth)",
+  "item.polarmagic.wand2_light": "Expert Wand (Light)",
+  "item.polarmagic.wand2_dark": "Expert Wand (Dark)",
+  "item.polarmagic.wand2.tooltip_1": "Wand for experts",
+  "item.polarmagic.wand2.tooltip_2": "If the attributes match, magic power is increased by 50%.",
+  "item.polarmagic.wand3_fire": "Legendary Wand (Fire)",
+  "item.polarmagic.wand3_water": "Legendary Wand (Water)",
+  "item.polarmagic.wand3_earth": "Legendary Wand (Earth)",
+  "item.polarmagic.wand3_light": "Legendary Wand (Light)",
+  "item.polarmagic.wand3_dark": "Legendary Wand (Dark)",
+  "item.polarmagic.wand3.tooltip_1": "Legendary Wand.",
+  "item.polarmagic.wand3.tooltip_2": "If the attributes match, magic power is increased by 100%.",
+  "item.minecraft.potion.effect.instant_mana": "Potion of Instant Mana",
+  "item.minecraft.splash_potion.effect.instant_mana": "Splash Potion of Instant Mana",
+  "item.minecraft.lingering_potion.effect.instant_mana": "Lingering Potion of Instant Mana",
+  "item.minecraft.tipped_arrow.effect.instant_mana": "Arrow of Instant Mana",
+
+  "effect.polarmagic.instant_mana": "Instant Mana"
+}

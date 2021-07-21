@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "polarmagic",
+  "version": "${version}",
+
+  "name": "Polar Magic",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Bukgeuk_"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "MIT",
+  "icon": "assets/polarmagic/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.bukgeuk.polarmagic.PolarMagic"
+    ],
+    "client": [
+      "dev.bukgeuk.polarmagic.PolarMagicClient"
+    ]
+  },
+  "mixins": [
+    "polarmagic.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.8.7",
+    "fabric": "*",
+    "fabric-language-kotlin": "*",
+    "minecraft": "1.17.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}

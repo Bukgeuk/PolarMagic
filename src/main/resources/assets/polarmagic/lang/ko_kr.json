@@ -1,0 +1,26 @@
+{
+  "itemGroup.polarmagic.magic": "마법",
+  "item.polarmagic.wand": "견습용 지팡이",
+  "item.polarmagic.wand.tooltip_1": "초급자를 위한 지팡이.",
+  "item.polarmagic.wand.tooltip_2": "공짜다.",
+  "item.polarmagic.wand2_fire": "숙련자의 지팡이 (불)",
+  "item.polarmagic.wand2_water": "숙련자의 지팡이 (물)",
+  "item.polarmagic.wand2_earth": "숙련자의 지팡이 (땅)",
+  "item.polarmagic.wand2_light": "숙련자의 지팡이 (빛)",
+  "item.polarmagic.wand2_dark": "숙련자의 지팡이 (어둠)",
+  "item.polarmagic.wand2.tooltip_1": "숙련자를 위한 지팡이.",
+  "item.polarmagic.wand2.tooltip_2": "속성이 일치하면 마법의 위력이 50% 상승한다.",
+  "item.polarmagic.wand3_fire": "전설의 지팡이 (불)",
+  "item.polarmagic.wand3_water": "전설의 지팡이 (물)",
+  "item.polarmagic.wand3_earth": "전설의 지팡이 (땅)",
+  "item.polarmagic.wand3_light": "전설의 지팡이 (빛)",
+  "item.polarmagic.wand3_dark": "전설의 지팡이 (어둠)",
+  "item.polarmagic.wand3.tooltip_1": "전설로 내려오는 지팡이.",
+  "item.polarmagic.wand3.tooltip_2": "속성이 일치하면 마법의 위력이 100% 상승한다.",
+  "item.minecraft.potion.effect.instant_mana": "마나 즉시 회복의 물약",
+  "item.minecraft.splash_potion.effect.instant_mana": "투척용 마나 즉시 회복의 물약",
+  "item.minecraft.lingering_potion.effect.instant_mana": "잔류형 마나 즉시 회복의 물약",
+  "item.minecraft.tipped_arrow.effect.instant_mana": "마나 즉시 회복의 화살",
+
+  "effect.polarmagic.instant_mana": "마나 즉시 회복"
+}

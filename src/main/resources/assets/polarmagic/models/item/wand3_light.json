@@ -1,0 +1,14 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "polarmagic:item/wand3_light"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "throwing": 1
+      },
+      "model": "polarmagic:item/wand3_light_use"
+    }
+  ]
+}

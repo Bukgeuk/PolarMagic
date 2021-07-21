@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "dev.bukgeuk.polarmagic.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+  ],
+  "client": [
+    "PlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
