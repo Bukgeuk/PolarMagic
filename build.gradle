@@ -61,6 +61,7 @@ tasks.withType(JavaCompile) {
 
     // Minecraft 1.17 (21w19a) upwards uses Java 16.
     it.options.release = 16
+    it.options.annotationProcessorPath = configurations.annotationProcessor
 }
 
 java {
