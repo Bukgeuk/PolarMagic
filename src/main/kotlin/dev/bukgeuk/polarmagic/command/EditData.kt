@@ -37,4 +37,24 @@ class EditData {
 
         return 0
     }
+
+    fun magicCurrentExp(ctx: CommandContext<ServerCommandSource>): Int {
+        val amount = getDouble(ctx, "amount")
+
+        (ctx.source.player as PlayerEntityExt).addMagicCurrentExp(amount)
+
+        ctx.source.sendFeedback(LiteralText("add $amount to 'manaRecoveryAmount'"), false)
+
+        return 0
+    }
+
+    fun magicMaxExp(ctx: CommandContext<ServerCommandSource>): Int {
+        val amount = getDouble(ctx, "amount")
+
+        (ctx.source.player as PlayerEntityExt).magicMaxExp = amount;
+
+        ctx.source.sendFeedback(LiteralText("'magicMaxExp' is $amount now"), false)
+
+        return 0
+    }
 }

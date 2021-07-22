@@ -38,17 +38,17 @@ class HudManaBar : WWidget() {
             ScreenDrawing.coloredRect(matrices, manaLeft, manaTop, w / 2 - 110, 1, ManaBarBorderColor)
             ScreenDrawing.coloredRect(matrices, manaLeft, manaTop + 5, w / 2 - 110, 1, ManaBarBorderColor)
             ScreenDrawing.coloredRect(matrices, manaLeft, manaTop, 1, 6, ManaBarBorderColor)
-            ScreenDrawing.coloredRect(matrices, manaLeft + manaWidth + 1, h - 10, 1, 6, ManaBarBorderColor)
+            ScreenDrawing.coloredRect(matrices, manaLeft + manaWidth + 1, manaTop, 1, 6, ManaBarBorderColor)
 
             // Content
             val table = MagicDataTable.getData(p.uuid)
-            val rawCurrentMana = table?.aCurrentManaAmount //table?.currentManaAmount
+            val rawCurrentMana = table?.aCurrentManaAmount
             val rawMaxMana = table?.maxManaAmount
 
             val percentage = if (rawMaxMana == 0.0 || rawMaxMana == null || rawCurrentMana == null) 0.0 else rawCurrentMana / rawMaxMana
 
-            ScreenDrawing.coloredRect(matrices, manaLeft + 1, manaTop + 1, (manaWidth * percentage).toInt(), 4, ManaBarColor)
-            //ScreenDrawing.texturedRect(matrices, manaLeft + 1, manaTop + 1, (manaWidth * percentage).toInt(), 4, Identifier("polarmagic:textures/gui/mana_gauge.png"), 0xFF_FFFFFF.toInt())
+            if (percentage > 0.0)
+                ScreenDrawing.coloredRect(matrices, manaLeft + 1, manaTop + 1, (manaWidth * percentage).toInt(), 4, ManaBarColor)
             ScreenDrawing.coloredRect(matrices, manaLeft + 1, manaTop + 1, manaWidth, 4, EmptyManaBarColor)
 
             // Text
@@ -75,10 +75,5 @@ class HudManaBar : WWidget() {
         }
     }
 
-
-}
-
-@Environment(EnvType.CLIENT)
-class HudSelectedSpell : WWidget() {
 
 }

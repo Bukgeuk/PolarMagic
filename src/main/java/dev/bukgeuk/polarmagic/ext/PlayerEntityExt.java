@@ -6,11 +6,10 @@ public interface PlayerEntityExt {
     void setMaxManaAmount(double amount);
     void setCurrentManaAmount(double amount);
 
-    void magicLevelUp();
     Integer getMagicLevel();
 
     Double getMagicCurrentExp();
-    void setMagicCurrentExp(double exp);
+    void addMagicCurrentExp(double exp);
     Double getMagicMaxExp();
     void setMagicMaxExp(double exp);
 

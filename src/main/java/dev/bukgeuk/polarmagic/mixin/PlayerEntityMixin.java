@@ -24,6 +24,7 @@ import java.util.Queue;
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityExt {
     private static final int aTick = 5;
     private static final int rTick = 100;
+    private static final double expMultiplier = 1.1;
     private int rIdx = 1;
 
     private Double maxManaAmount = null;
@@ -31,9 +32,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     private Double aCurrentManaAmount = null;
     private Integer magicLevel = null;
     private Double magicCurrentExp = null;
+    private Double aMagicCurrentExp = null;
     private Double magicMaxExp = null;
+    private Double aMagicMaxExp = null;
     private Double manaRecoveryAmount = null;
-    private final Queue<aQueueData> aQueue = new LinkedList<>();
+    private final Queue<aQueueData> aManaQueue = new LinkedList<>();
+    private final Queue<aQueueData> aExpQueue = new LinkedList<>();
 
     private boolean init = false;
 
@@ -59,6 +63,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
         this.magicMaxExp = 100.0;
         this.manaRecoveryAmount = 10.0;
         this.aCurrentManaAmount = 0.0;
+        this.aMagicCurrentExp = 0.0;
+        this.aMagicMaxExp = 100.0;
     }
 
     @Override
@@ -79,7 +85,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
             for (int i = 1; i <= aTick; i++) {
                 double s = GraphKt.getGraphS(a, i, aTick);
 
-                aQueue.add(new aQueueData(true, s));
+                aManaQueue.add(new aQueueData(true, s));
             }
 
         } else if (this.currentManaAmount > amount) {
@@ -92,7 +98,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
             for (int i = 1; i <= aTick; i++) {
                 double s = GraphKt.getGraphS(a, i, aTick);
 
-                aQueue.add(new aQueueData(false, s));
+                aManaQueue.add(new aQueueData(false, s));
             }
         }
 
@@ -105,10 +111,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     @Override
     public Double getCurrentManaAmount() { return this.currentManaAmount; }
 
-    @Override
-    public void magicLevelUp() {
+    private void magicLevelUp() {
         if (this.magicLevel != null) {
             this.magicLevel++;
+            this.magicMaxExp *= expMultiplier;
+        }
+    }
+
+    private void aMagicLevelUp() {
+        if (this.magicLevel != null) {
+            this.aMagicMaxExp *= expMultiplier;
         }
     }
 
@@ -122,12 +134,45 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     public Double getMagicCurrentExp() { return this.magicCurrentExp; }
 
     @Override
-    public void setMagicCurrentExp(double exp) { this.magicCurrentExp = exp; }
+    public void addMagicCurrentExp(double exp) {
+        if (exp == 0) return;
+        boolean isUp = exp > 0;
+        if (!isUp) {
+            exp = Math.abs(exp);
+            if (exp > this.magicCurrentExp) exp = this.magicCurrentExp;
+        }
+
+        // (at^3)/3 = v
+        double a = GraphKt.getGraphA(exp, aTick);
+
+        // (a(t_2-t)^3-a(t_1-t)^3)/3 = s
+        for (int i = 1; i <= aTick; i++) {
+            double s = GraphKt.getGraphS(a, i, aTick);
+
+            aExpQueue.add(new aQueueData(isUp, s));
+        }
+
+        if (isUp) {
+            double v = this.magicCurrentExp + exp;
+            while (v > this.magicMaxExp) {
+                v -= this.magicMaxExp;
+                this.magicLevelUp();
+            }
+
+            this.magicCurrentExp = v;
+        } else
+            this.magicCurrentExp -= exp;
+    }
 
     @Override
-    public void setMagicMaxExp(double exp) { this.magicMaxExp = exp; }
+    public void setMagicMaxExp(double exp) {
+        this.magicMaxExp = exp;
+        this.aMagicMaxExp = exp;
+    }
 
     public Double getACurrentManaAmount() { return this.aCurrentManaAmount; }
+
+    public Double getAMagicCurrentExp() { return this.aMagicCurrentExp; }
 
     @Override
     public Double getManaRecoveryAmount() { return this.manaRecoveryAmount; }
@@ -148,6 +193,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
         manaRecoveryAmount = nbt.getDouble("manaRecoveryAmount");
 
         aCurrentManaAmount = currentManaAmount;
+        aMagicCurrentExp = magicCurrentExp;
+        aMagicMaxExp = magicMaxExp;
 
         if (error() && !isClient()) reset();
     }
@@ -182,8 +229,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
             rIdx++;
         }
 
-        if (!aQueue.isEmpty()) {
-            aQueueData data = aQueue.poll();
+        if (!aManaQueue.isEmpty()) {
+            aQueueData data = aManaQueue.poll();
 
             if (data.isUp)
                 this.aCurrentManaAmount += data.amount;
@@ -191,8 +238,23 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
                 this.aCurrentManaAmount -= data.amount;
         }
 
+        if (!aExpQueue.isEmpty()) {
+            aQueueData data = aExpQueue.poll();
+
+            if (data.isUp) {
+                double v = this.aMagicCurrentExp + data.amount;
+
+                while (v > this.aMagicMaxExp) {
+                    v -= this.aMagicMaxExp;
+                    this.aMagicLevelUp();
+                }
+                this.aMagicCurrentExp = v;
+            } else
+                this.aMagicCurrentExp -= data.amount;
+        }
+
         if (maxManaAmount != null && currentManaAmount != null && magicLevel != null && magicCurrentExp != null && magicMaxExp != null)
-            MagicDataTable.setData(this.uuid, new MagicData(maxManaAmount, currentManaAmount, magicLevel, magicCurrentExp, magicMaxExp, aCurrentManaAmount, manaRecoveryAmount));
+            MagicDataTable.setData(this.uuid, new MagicData(maxManaAmount, currentManaAmount, magicLevel, magicCurrentExp, magicMaxExp, manaRecoveryAmount, aCurrentManaAmount, aMagicCurrentExp, aMagicMaxExp));
 
         if (!init) {
             if (error() && !isClient())

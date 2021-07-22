@@ -15,6 +15,10 @@ fun CommandRegister() {
             .then(argument("amount", DoubleArgumentType.doubleArg(0.0)).executes { ctx -> EditData().currentManaAmount(ctx) }))
         .then(literal("manaRecoveryAmount")
             .then(argument("amount", DoubleArgumentType.doubleArg(0.0)).executes{ ctx -> EditData().manaRecoveryAmount(ctx) }))
+        .then(literal("magicCurrentExp")
+            .then(argument("amount", DoubleArgumentType.doubleArg(0.0)).executes{ ctx -> EditData().magicCurrentExp(ctx) }))
+        .then(literal("magicMaxExp")
+            .then(argument("amount", DoubleArgumentType.doubleArg(0.0)).executes{ ctx -> EditData().magicMaxExp(ctx) }))
     )}
 
     CommandRegistrationCallback.EVENT.register { dispatcher, dedicated -> dispatcher.register(literal("printdata").requires { source -> source.hasPermissionLevel(2) }
@@ -24,6 +28,10 @@ fun CommandRegister() {
             .executes { ctx -> PrintData().currentManaAmount(ctx) })
         .then(literal("manaRecoveryAmount")
             .executes{ ctx -> PrintData().manaRecoveryAmount(ctx) })
+        .then(literal("magicCurrentExp")
+            .executes{ ctx -> PrintData().magicCurrentExp(ctx) })
+        .then(literal("magicMaxExp")
+            .executes{ ctx -> PrintData().magicMaxExp(ctx) })
     )}
 
     /*ClientCommandManager.DISPATCHER.register(LiteralArgumentBuilder.literal<FabricClientCommandSource?>("editdata").requires { source -> source.hasPermissionLevel(2) }

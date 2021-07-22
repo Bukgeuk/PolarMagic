@@ -1,6 +1,5 @@
 package dev.bukgeuk.polarmagic.command
 
-import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
 import dev.bukgeuk.polarmagic.ext.PlayerEntityExt
 import net.minecraft.server.command.ServerCommandSource
@@ -27,6 +26,22 @@ class PrintData {
         val amount = (ctx.source.player as PlayerEntityExt).manaRecoveryAmount
 
         ctx.source.sendFeedback(LiteralText("'manaRecoveryAmount' is $amount"), false)
+
+        return 0
+    }
+
+    fun magicCurrentExp(ctx: CommandContext<ServerCommandSource>): Int {
+        val amount = (ctx.source.player as PlayerEntityExt).magicCurrentExp
+
+        ctx.source.sendFeedback(LiteralText("'magicCurrentExp' is $amount"), false)
+
+        return 0
+    }
+
+    fun magicMaxExp(ctx: CommandContext<ServerCommandSource>): Int {
+        val amount = (ctx.source.player as PlayerEntityExt).magicMaxExp
+
+        ctx.source.sendFeedback(LiteralText("'magicMaxExp' is $amount"), false)
 
         return 0
     }
