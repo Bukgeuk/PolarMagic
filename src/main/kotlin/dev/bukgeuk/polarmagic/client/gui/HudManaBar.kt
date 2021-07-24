@@ -1,4 +1,4 @@
-package dev.bukgeuk.polarmagic.gui
+package dev.bukgeuk.polarmagic.client.gui
 
 import dev.bukgeuk.polarmagic.util.MagicDataTable
 import dev.bukgeuk.polarmagic.util.getStringWidth

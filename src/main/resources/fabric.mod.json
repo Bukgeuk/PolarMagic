@@ -22,7 +22,7 @@
       "dev.bukgeuk.polarmagic.PolarMagic"
     ],
     "client": [
-      "dev.bukgeuk.polarmagic.PolarMagicClient"
+      "dev.bukgeuk.polarmagic.client.PolarMagicClient"
     ]
   },
   "mixins": [

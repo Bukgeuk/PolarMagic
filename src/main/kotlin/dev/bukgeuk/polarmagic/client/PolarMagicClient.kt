@@ -1,4 +1,4 @@
-package dev.bukgeuk.polarmagic
+package dev.bukgeuk.polarmagic.client
 
 import dev.bukgeuk.polarmagic.register.HudRegister
 import dev.bukgeuk.polarmagic.register.ItemPredicateRegister
