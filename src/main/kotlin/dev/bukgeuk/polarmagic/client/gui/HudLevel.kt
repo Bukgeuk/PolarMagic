@@ -1,6 +1,6 @@
 package dev.bukgeuk.polarmagic.client.gui
 
-import dev.bukgeuk.polarmagic.util.MagicDataTable
+import dev.bukgeuk.polarmagic.util.MagicDataSync
 import dev.bukgeuk.polarmagic.util.getStringHeight
 import dev.bukgeuk.polarmagic.util.getStringWidth
 import io.github.cottonmc.cotton.gui.client.ScreenDrawing
@@ -24,36 +24,39 @@ class HudLevel : WWidget() {
         val p = MinecraftClient.getInstance().player
 
         if (p?.isCreative == false) {
-            val table = MagicDataTable.getData(p.uuid)
+            val table = MagicDataSync.getClientData()
 
-            val str = "Lv.${table.magicLevel} ${p.displayName.string}"
-            ScreenDrawing.drawString(matrices, str, 5, 5, LevelTextColor)
+            if (table != null) {
+                val str = "Lv.${table.magicLevel} ${p.displayName.string}"
+                ScreenDrawing.drawString(matrices, str, 5, 5, LevelTextColor)
 
-            // Border
-            val expLeft = 5
-            val expTop = 5 + getStringHeight() + 2
-            val expWidth = getStringWidth(str).toInt() + 20
+                // Border
+                val expLeft = 5
+                val expTop = 5 + getStringHeight() + 2
+                val expWidth = getStringWidth(str).toInt() + 20
 
-            ScreenDrawing.coloredRect(matrices, expLeft, expTop, expWidth, 1, ExpBarBorderColor)
-            ScreenDrawing.coloredRect(matrices, expLeft, expTop + 5, expWidth, 1, ExpBarBorderColor)
-            ScreenDrawing.coloredRect(matrices, expLeft, expTop, 1, 6, ExpBarBorderColor)
-            ScreenDrawing.coloredRect(matrices, expLeft + expWidth, expTop, 1, 6, ExpBarBorderColor)
+                ScreenDrawing.coloredRect(matrices, expLeft, expTop, expWidth, 1, ExpBarBorderColor)
+                ScreenDrawing.coloredRect(matrices, expLeft, expTop + 5, expWidth, 1, ExpBarBorderColor)
+                ScreenDrawing.coloredRect(matrices, expLeft, expTop, 1, 6, ExpBarBorderColor)
+                ScreenDrawing.coloredRect(matrices, expLeft + expWidth, expTop, 1, 6, ExpBarBorderColor)
 
-            // Content
-            val rawCurrentExp = table?.aMagicCurrentExp
-            val rawMaxExp = table?.aMagicMaxExp
+                // Content
+                val rawCurrentExp = table.aMagicCurrentExp
+                val rawMaxExp = table.aMagicMaxExp
 
-            val percentage = if (rawMaxExp == 0.0 || rawCurrentExp == null || rawMaxExp == null) 0.0 else rawCurrentExp / rawMaxExp
+                val percentage =
+                    if (rawMaxExp == 0.0 || rawCurrentExp == null || rawMaxExp == null) 0.0 else rawCurrentExp / rawMaxExp
 
-            if (percentage > 0.0)
-                ScreenDrawing.coloredRect(matrices, expLeft + 1, expTop + 1, (expWidth * percentage).toInt(), 4, ExpBarColor)
-            ScreenDrawing.coloredRect(matrices, expLeft + 1, expTop + 1, expWidth, 4, EmptyExpBarColor)
+                if (percentage > 0.0)
+                    ScreenDrawing.coloredRect(matrices, expLeft + 1, expTop + 1, (expWidth * percentage).toInt(), 4, ExpBarColor)
+                ScreenDrawing.coloredRect(matrices, expLeft + 1, expTop + 1, expWidth, 4, EmptyExpBarColor)
 
-            // Text
-            val currentExp = String.format("%.1f", rawCurrentExp)
-            val maxExp = String.format("%.1f", rawMaxExp)
-            val expText = "$currentExp/$maxExp"
-            ScreenDrawing.drawString(matrices, expText, (expLeft + 1 + expWidth / 2 - getStringWidth(expText) / 2).toInt(), expTop - 1, ExpTextColor)
+                // Text
+                val currentExp = String.format("%.1f", rawCurrentExp)
+                val maxExp = String.format("%.1f", rawMaxExp)
+                val expText = "$currentExp/$maxExp"
+                ScreenDrawing.drawString(matrices, expText, (expLeft + 1 + expWidth / 2 - getStringWidth(expText) / 2).toInt(), expTop - 1, ExpTextColor)
+            }
         }
     }
 }

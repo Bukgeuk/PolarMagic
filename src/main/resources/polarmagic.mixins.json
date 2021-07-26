@@ -3,8 +3,12 @@
   "package": "dev.bukgeuk.polarmagic.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "PlayerEntityMixin"
   ],
   "client": [
+    "PlayerEntityMixin"
+  ],
+  "server": [
     "PlayerEntityMixin"
   ],
   "injectors": {

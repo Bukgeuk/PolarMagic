@@ -1,6 +1,6 @@
 package dev.bukgeuk.polarmagic.client.gui
 
-import dev.bukgeuk.polarmagic.util.MagicDataTable
+import dev.bukgeuk.polarmagic.util.MagicDataSync
 import dev.bukgeuk.polarmagic.util.getStringWidth
 import io.github.cottonmc.cotton.gui.client.ScreenDrawing
 import io.github.cottonmc.cotton.gui.widget.WWidget
@@ -30,36 +30,40 @@ class HudManaBar : WWidget() {
         val p = MinecraftClient.getInstance().player
 
         if (p?.isCreative == false) {
-            val manaWidth = w / 2 - 110 - 2
-            val manaLeft = 12
-            val manaTop = h - 10
+            val table = MagicDataSync.getClientData()
 
-            // Border
-            ScreenDrawing.coloredRect(matrices, manaLeft, manaTop, w / 2 - 110, 1, ManaBarBorderColor)
-            ScreenDrawing.coloredRect(matrices, manaLeft, manaTop + 5, w / 2 - 110, 1, ManaBarBorderColor)
-            ScreenDrawing.coloredRect(matrices, manaLeft, manaTop, 1, 6, ManaBarBorderColor)
-            ScreenDrawing.coloredRect(matrices, manaLeft + manaWidth + 1, manaTop, 1, 6, ManaBarBorderColor)
+            if (table != null) {
+                val manaWidth = w / 2 - 110 - 2
+                val manaLeft = 12
+                val manaTop = h - 10
 
-            // Content
-            val table = MagicDataTable.getData(p.uuid)
-            val rawCurrentMana = table?.aCurrentManaAmount
-            val rawMaxMana = table?.maxManaAmount
+                // Border
+                ScreenDrawing.coloredRect(matrices, manaLeft, manaTop, w / 2 - 110, 1, ManaBarBorderColor)
+                ScreenDrawing.coloredRect(matrices, manaLeft, manaTop + 5, w / 2 - 110, 1, ManaBarBorderColor)
+                ScreenDrawing.coloredRect(matrices, manaLeft, manaTop, 1, 6, ManaBarBorderColor)
+                ScreenDrawing.coloredRect(matrices, manaLeft + manaWidth + 1, manaTop, 1, 6, ManaBarBorderColor)
 
-            val percentage = if (rawMaxMana == 0.0 || rawMaxMana == null || rawCurrentMana == null) 0.0 else rawCurrentMana / rawMaxMana
+                // Content
 
-            if (percentage > 0.0)
-                ScreenDrawing.coloredRect(matrices, manaLeft + 1, manaTop + 1, (manaWidth * percentage).toInt(), 4, ManaBarColor)
-            ScreenDrawing.coloredRect(matrices, manaLeft + 1, manaTop + 1, manaWidth, 4, EmptyManaBarColor)
+                val rawCurrentMana = table.aCurrentManaAmount
+                val rawMaxMana = table.maxManaAmount
 
-            // Text
-            val currentMana = String.format("%.1f", rawCurrentMana)
-            val maxMana = String.format("%.1f", rawMaxMana)
-            val manaText = "$currentMana/$maxMana"
-            ScreenDrawing.drawString(matrices, manaText, (manaLeft + 1 + manaWidth / 2 - getStringWidth(manaText) / 2).toInt(), manaTop - 1, ManaTextColor)
+                val percentage =
+                    if (rawMaxMana == 0.0 || rawMaxMana == null || rawCurrentMana == null) 0.0 else rawCurrentMana / rawMaxMana
 
-            // Icon
-            ScreenDrawing.texturedRect(matrices, 1, manaTop - 7, 16, 16, Identifier("polarmagic:textures/gui/mana_icon.png"), 0xFF_FFFFFF.toInt())
+                if (percentage > 0.0)
+                    ScreenDrawing.coloredRect(matrices, manaLeft + 1, manaTop + 1, (manaWidth * percentage).toInt(), 4, ManaBarColor)
+                ScreenDrawing.coloredRect(matrices, manaLeft + 1, manaTop + 1, manaWidth, 4, EmptyManaBarColor)
 
+                // Text
+                val currentMana = String.format("%.1f", rawCurrentMana)
+                val maxMana = String.format("%.1f", rawMaxMana)
+                val manaText = "$currentMana/$maxMana"
+                ScreenDrawing.drawString(matrices, manaText, (manaLeft + 1 + manaWidth / 2 - getStringWidth(manaText) / 2).toInt(), manaTop - 1, ManaTextColor)
+
+                // Icon
+                ScreenDrawing.texturedRect(matrices, 1, manaTop - 7, 16, 16, Identifier("polarmagic:textures/gui/mana_icon.png"), 0xFF_FFFFFF.toInt())
+            }
         }
     }
 

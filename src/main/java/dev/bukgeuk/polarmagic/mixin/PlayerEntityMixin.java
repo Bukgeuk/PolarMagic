@@ -3,14 +3,14 @@ package dev.bukgeuk.polarmagic.mixin;
 import dev.bukgeuk.polarmagic.PolarMagic;
 import dev.bukgeuk.polarmagic.ext.PlayerEntityExt;
 import dev.bukgeuk.polarmagic.util.MagicData;
-import dev.bukgeuk.polarmagic.util.MagicDataTable;
+import dev.bukgeuk.polarmagic.util.MagicDataSync;
 import dev.bukgeuk.polarmagic.util.aQueueData;
 import dev.bukgeuk.polarmagic.util.GraphKt;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,7 +50,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     }
 
     private boolean isClient() {
-        return (this.getClass().getName().equals("net.minecraft.client.network.ClientPlayerEntity"));
+        return this.getClass().getName().equals("net.minecraft.client.network.ClientPlayerEntity");
     }
 
     private void reset() {
@@ -183,14 +183,22 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
         magicLevel = nbt.getInt("magicLevel");
+        System.out.println(magicLevel);
 
         magicCurrentExp = nbt.getDouble("magicCurrentExp");
         magicMaxExp = nbt.getDouble("magicMaxExp");
+        System.out.println(magicCurrentExp);
+        System.out.println(magicMaxExp);
 
         currentManaAmount = nbt.getDouble("currentManaAmount");
         maxManaAmount = nbt.getDouble("maxManaAmount");
+        System.out.println(currentManaAmount);
+        System.out.println(maxManaAmount);
 
         manaRecoveryAmount = nbt.getDouble("manaRecoveryAmount");
+        System.out.println(manaRecoveryAmount);
+
+        System.out.println(this);
 
         aCurrentManaAmount = currentManaAmount;
         aMagicCurrentExp = magicCurrentExp;
@@ -253,8 +261,13 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
                 this.aMagicCurrentExp -= data.amount;
         }
 
-        if (maxManaAmount != null && currentManaAmount != null && magicLevel != null && magicCurrentExp != null && magicMaxExp != null)
-            MagicDataTable.setData(this.uuid, new MagicData(maxManaAmount, currentManaAmount, magicLevel, magicCurrentExp, magicMaxExp, manaRecoveryAmount, aCurrentManaAmount, aMagicCurrentExp, aMagicMaxExp));
+        if (maxManaAmount != null && currentManaAmount != null && magicLevel != null && magicCurrentExp != null && magicMaxExp != null) {
+            ServerPlayerEntity player;
+            if (isClient()) player = null;
+            else player = (ServerPlayerEntity)((LivingEntity) this);
+
+            MagicDataSync.setData(this.uuid, new MagicData(maxManaAmount, currentManaAmount, magicLevel, magicCurrentExp, magicMaxExp, manaRecoveryAmount, aCurrentManaAmount, aMagicCurrentExp, aMagicMaxExp), isClient(), player);
+        }
 
         if (!init) {
             if (error() && !isClient())

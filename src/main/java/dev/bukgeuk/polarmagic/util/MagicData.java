@@ -1,6 +1,8 @@
 package dev.bukgeuk.polarmagic.util;
 
-public class MagicData {
+import java.io.Serializable;
+
+public class MagicData implements Serializable {
     public Double maxManaAmount;
     public Double currentManaAmount;
     public Double aCurrentManaAmount;
