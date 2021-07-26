@@ -32,7 +32,5 @@ class PolarMagic: ModInitializer {
         CommandRegister()
 
         PotionRegister()
-
-        ParticleRegister()
     }
 }

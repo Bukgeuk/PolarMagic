@@ -1,9 +1,11 @@
 package dev.bukgeuk.polarmagic.register
 
 import dev.bukgeuk.polarmagic.client.particle.*
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry
 
-
+@Environment(EnvType.CLIENT)
 fun ParticleRegister() {
     val instance = ParticleFactoryRegistry.getInstance()
     
