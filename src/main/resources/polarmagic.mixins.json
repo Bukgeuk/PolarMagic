@@ -6,6 +6,7 @@
     "PlayerEntityMixin"
   ],
   "client": [
+    "MinecraftClientMixin",
     "PlayerEntityMixin"
   ],
   "server": [
