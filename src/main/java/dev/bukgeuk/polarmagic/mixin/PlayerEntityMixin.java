@@ -183,22 +183,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
         magicLevel = nbt.getInt("magicLevel");
-        System.out.println(magicLevel);
 
         magicCurrentExp = nbt.getDouble("magicCurrentExp");
         magicMaxExp = nbt.getDouble("magicMaxExp");
-        System.out.println(magicCurrentExp);
-        System.out.println(magicMaxExp);
 
         currentManaAmount = nbt.getDouble("currentManaAmount");
         maxManaAmount = nbt.getDouble("maxManaAmount");
-        System.out.println(currentManaAmount);
-        System.out.println(maxManaAmount);
 
         manaRecoveryAmount = nbt.getDouble("manaRecoveryAmount");
-        System.out.println(manaRecoveryAmount);
-
-        System.out.println(this);
 
         aCurrentManaAmount = currentManaAmount;
         aMagicCurrentExp = magicCurrentExp;

@@ -8,7 +8,7 @@ import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.CommandManager.literal
 
 fun CommandRegister() {
-    CommandRegistrationCallback.EVENT.register { dispatcher, dedicated -> dispatcher.register(literal("editdata").requires { source -> source.hasPermissionLevel(2) }
+    CommandRegistrationCallback.EVENT.register { dispatcher, _ -> dispatcher.register(literal("editdata").requires { source -> source.hasPermissionLevel(4) }
         .then(literal("maxManaAmount")
             .then(argument("amount", DoubleArgumentType.doubleArg(0.1)).executes { ctx -> EditData().maxManaAmount(ctx) }))
         .then(literal("currentManaAmount")
@@ -21,7 +21,7 @@ fun CommandRegister() {
             .then(argument("amount", DoubleArgumentType.doubleArg(0.0)).executes{ ctx -> EditData().magicMaxExp(ctx) }))
     )}
 
-    CommandRegistrationCallback.EVENT.register { dispatcher, dedicated -> dispatcher.register(literal("printdata").requires { source -> source.hasPermissionLevel(2) }
+    CommandRegistrationCallback.EVENT.register { dispatcher, _ -> dispatcher.register(literal("printdata").requires { source -> source.hasPermissionLevel(4) }
         .then(literal("maxManaAmount")
             .executes { ctx -> PrintData().maxManaAmount(ctx) })
         .then(literal("currentManaAmount")
