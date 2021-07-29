@@ -1,5 +1,6 @@
 package dev.bukgeuk.polarmagic.register
 
+import dev.bukgeuk.polarmagic.PolarMagic
 import dev.bukgeuk.polarmagic.item.*
 import net.fabricmc.fabric.api.`object`.builder.v1.client.model.FabricModelPredicateProviderRegistry
 import net.minecraft.client.world.ClientWorld
@@ -35,15 +36,15 @@ fun ItemPredicateRegister() {
 }
 
 fun ItemRegister() {
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand"), ITEM_WAND)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand2_fire"), ITEM_WAND2_FIRE)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand2_water"), ITEM_WAND2_WATER)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand2_earth"), ITEM_WAND2_EARTH)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand2_light"), ITEM_WAND2_LIGHT)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand2_dark"), ITEM_WAND2_DARK)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand3_fire"), ITEM_WAND3_FIRE)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand3_water"), ITEM_WAND3_WATER)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand3_earth"), ITEM_WAND3_EARTH)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand3_light"), ITEM_WAND3_LIGHT)
-    Registry.register(Registry.ITEM, Identifier("polarmagic", "wand3_dark"), ITEM_WAND3_DARK)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand"), ITEM_WAND)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand2_fire"), ITEM_WAND2_FIRE)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand2_water"), ITEM_WAND2_WATER)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand2_earth"), ITEM_WAND2_EARTH)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand2_light"), ITEM_WAND2_LIGHT)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand2_dark"), ITEM_WAND2_DARK)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand3_fire"), ITEM_WAND3_FIRE)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand3_water"), ITEM_WAND3_WATER)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand3_earth"), ITEM_WAND3_EARTH)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand3_light"), ITEM_WAND3_LIGHT)
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand3_dark"), ITEM_WAND3_DARK)
 }
