@@ -1,18 +1,22 @@
 package dev.bukgeuk.polarmagic.client
 
-import dev.bukgeuk.polarmagic.PolarMagic.Companion.PacketID
-import dev.bukgeuk.polarmagic.register.EntityModelRegister
-import dev.bukgeuk.polarmagic.register.HudRegister
-import dev.bukgeuk.polarmagic.register.ItemPredicateRegister
-import dev.bukgeuk.polarmagic.register.ParticleRegister
+import dev.bukgeuk.polarmagic.PolarMagic
+import dev.bukgeuk.polarmagic.PolarMagic.Companion.MagicCirclePacketID
+import dev.bukgeuk.polarmagic.networking.EntitySpawnPacket.PacketBufUtil.readAngle
+import dev.bukgeuk.polarmagic.networking.EntitySpawnPacket.PacketBufUtil.readVec3d
+import dev.bukgeuk.polarmagic.register.*
 import dev.bukgeuk.polarmagic.util.MagicCircleEntityData
 import dev.bukgeuk.polarmagic.util.MagicDataSync
 import dev.bukgeuk.polarmagic.util.convertPacketByteBufToMagicData
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
+import net.fabricmc.fabric.api.network.PacketContext
 import net.fabricmc.fabric.api.networking.v1.PacketSender
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.ClientPlayNetworkHandler
+import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityType
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.util.registry.Registry
 import java.util.*
@@ -53,6 +57,34 @@ class  PolarMagicClient: ClientModInitializer {
                 }
             }
         }
+
+        fun receiveEntityPacket() {
+            ClientSidePacketRegistry.INSTANCE.register(PolarMagic.ProjectilePacketID) { ctx: PacketContext, byteBuf: PacketByteBuf ->
+                val et: EntityType<*> = Registry.ENTITY_TYPE[byteBuf.readVarInt()]
+                val uuid = byteBuf.readUuid()
+                val entityId = byteBuf.readVarInt()
+                val pos = readVec3d(byteBuf)
+                val pitch = readAngle(byteBuf)
+                val yaw = readAngle(byteBuf)
+                ctx.taskQueue.execute {
+                    checkNotNull(MinecraftClient.getInstance().world) { "Tried to spawn entity in a null world!" }
+                    val e: Entity = et.create(MinecraftClient.getInstance().world)
+                        ?: throw IllegalStateException(
+                            "Failed to create instance of entity \"" + Registry.ENTITY_TYPE.getId(
+                                et
+                            ) + "\"!"
+                        )
+                    e.updateTrackedPosition(pos)
+                    e.setPos(pos.x, pos.y, pos.z)
+                    e.pitch = pitch
+                    e.yaw = yaw
+                    e.id = entityId
+                    e.uuid = uuid
+                    MinecraftClient.getInstance().world!!.addEntity(entityId, e)
+                }
+            }
+        }
+
     }
 
     override fun onInitializeClient() {
@@ -61,6 +93,9 @@ class  PolarMagicClient: ClientModInitializer {
         HudRegister()
 
         EntityModelRegister()
+
+        EntityRendererRegister()
+        receiveEntityPacket()
 
         ParticleRegister()
 
@@ -71,7 +106,6 @@ class  PolarMagicClient: ClientModInitializer {
                 MagicDataSync.setClientData(data)
             }
         }
-
-        ClientPlayNetworking.registerGlobalReceiver(PacketID, ::onEntitySpawn)
+        ClientPlayNetworking.registerGlobalReceiver(MagicCirclePacketID, ::onEntitySpawn)
     }
 }

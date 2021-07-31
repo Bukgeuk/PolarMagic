@@ -1,7 +1,9 @@
 package dev.bukgeuk.polarmagic.register
 
 import com.mojang.brigadier.arguments.DoubleArgumentType
+import com.mojang.brigadier.arguments.IntegerArgumentType
 import dev.bukgeuk.polarmagic.command.EditData
+import dev.bukgeuk.polarmagic.command.Magic
 import dev.bukgeuk.polarmagic.command.PrintData
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback
 import net.minecraft.server.command.CommandManager.argument
@@ -32,6 +34,11 @@ fun CommandRegister() {
             .executes{ ctx -> PrintData().magicCurrentExp(ctx) })
         .then(literal("magicMaxExp")
             .executes{ ctx -> PrintData().magicMaxExp(ctx) })
+    )}
+
+    CommandRegistrationCallback.EVENT.register { dispatcher, _ -> dispatcher.register(literal("magic").requires { source -> source.hasPermissionLevel(4) }
+        .then(literal("fireball")
+            .then(argument("level", IntegerArgumentType.integer(1)).executes { ctx -> Magic().fireball(ctx) }))
     )}
 
     /*ClientCommandManager.DISPATCHER.register(LiteralArgumentBuilder.literal<FabricClientCommandSource?>("editdata").requires { source -> source.hasPermissionLevel(2) }
