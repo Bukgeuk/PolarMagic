@@ -6,6 +6,7 @@ import dev.bukgeuk.polarmagic.util.MagicData;
 import dev.bukgeuk.polarmagic.util.MagicDataSync;
 import dev.bukgeuk.polarmagic.util.aQueueData;
 import dev.bukgeuk.polarmagic.util.GraphKt;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -50,7 +52,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     }
 
     private boolean isClient() {
-        return this.getClass().getName().equals("net.minecraft.client.network.ClientPlayerEntity");
+        String str = this.getClass().getName();
+        return (str.equals("net.minecraft.client.network.ClientPlayerEntity") || str.equals("net.minecraft.class_746") || str.equals("net.minecraft.class_745"));
     }
 
     private void reset() {
@@ -115,12 +118,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
         if (this.magicLevel != null) {
             this.magicLevel++;
             this.magicMaxExp *= expMultiplier;
+            this.magicMaxExp = Math.floor(this.magicMaxExp * 10) / 10;
         }
     }
 
     private void aMagicLevelUp() {
         if (this.magicLevel != null) {
             this.aMagicMaxExp *= expMultiplier;
+            this.aMagicMaxExp = Math.floor(this.aMagicMaxExp * 10) / 10;
         }
     }
 
