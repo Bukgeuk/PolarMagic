@@ -3,6 +3,7 @@ package dev.bukgeuk.polarmagic.client.gui
 import dev.bukgeuk.polarmagic.util.MagicDataSync
 import dev.bukgeuk.polarmagic.util.getStringHeight
 import dev.bukgeuk.polarmagic.util.getStringWidth
+import dev.bukgeuk.polarmagic.util.useManaFeature
 import io.github.cottonmc.cotton.gui.client.ScreenDrawing
 import io.github.cottonmc.cotton.gui.widget.WWidget
 import net.fabricmc.api.EnvType
@@ -23,11 +24,11 @@ class HudLevel : WWidget() {
     override fun paint(matrices: MatrixStack?, x: Int, y: Int, mouseX: Int, mouseY: Int) {
         val p = MinecraftClient.getInstance().player
 
-        if (p?.isCreative == false) {
+        if (useManaFeature(p)) {
             val table = MagicDataSync.getClientData()
 
             if (table != null) {
-                val str = "Lv.${table.magicLevel} ${p.displayName.string}"
+                val str = "Lv.${table.magicLevel} ${p?.displayName?.string}"
                 ScreenDrawing.drawString(matrices, str, 5, 5, LevelTextColor)
 
                 // Border
