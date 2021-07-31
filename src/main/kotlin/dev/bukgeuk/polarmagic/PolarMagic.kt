@@ -1,9 +1,6 @@
 package dev.bukgeuk.polarmagic
 
-import dev.bukgeuk.polarmagic.register.CommandRegister
-import dev.bukgeuk.polarmagic.register.EntityRegister
-import dev.bukgeuk.polarmagic.register.ItemRegister
-import dev.bukgeuk.polarmagic.register.PotionRegister
+import dev.bukgeuk.polarmagic.register.*
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.ClientPlayerEntity
@@ -14,10 +11,11 @@ import org.apache.logging.log4j.Logger
 
 class PolarMagic: ModInitializer {
     companion object {
-        val ModID = "polarmagic"
+        const val ModID = "polarmagic"
         val logger: Logger = LogManager.getLogger(PolarMagic::class)
-        val PacketID = Identifier(ModID, "magic_circle_spawn_packet")
-        val lightValue: Int = 15728880
+        val MagicCirclePacketID = Identifier(ModID, "magic_circle_spawn_packet")
+        val ProjectilePacketID = Identifier(ModID, "projectile_spawn_packet")
+        const val lightValue: Int = 15728880
     }
 
     override fun onInitialize() {

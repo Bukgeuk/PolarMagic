@@ -1,6 +1,6 @@
 package dev.bukgeuk.polarmagic.entity.magic_circle.base
 
-import dev.bukgeuk.polarmagic.PolarMagic.Companion.PacketID
+import dev.bukgeuk.polarmagic.PolarMagic.Companion.MagicCirclePacketID
 import io.netty.buffer.Unpooled
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -71,7 +71,7 @@ open class MagicCircleEntity(entityType: EntityType<*>, world: World, private va
             .writeByte(MathHelper.floor(pitch * 256.0f / 360.0f))
             .writeByte(MathHelper.floor(yaw * 256.0f / 360.0f))
 
-        return ServerPlayNetworking.createS2CPacket(PacketID, buf)
+        return ServerPlayNetworking.createS2CPacket(MagicCirclePacketID, buf)
     }
 
     override fun isCollidable(): Boolean {
