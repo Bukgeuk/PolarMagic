@@ -47,4 +47,6 @@ fun ItemRegister() {
     Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand3_earth"), ITEM_WAND3_EARTH)
     Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand3_light"), ITEM_WAND3_LIGHT)
     Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "wand3_dark"), ITEM_WAND3_DARK)
+
+    Registry.register(Registry.ITEM, Identifier(PolarMagic.ModID, "orb_of_fire"), ITEM_ORB_OF_FIRE)
 }
