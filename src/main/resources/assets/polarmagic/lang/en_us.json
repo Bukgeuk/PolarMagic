@@ -21,6 +21,7 @@
   "item.minecraft.splash_potion.effect.instant_mana": "Splash Potion of Instant Mana",
   "item.minecraft.lingering_potion.effect.instant_mana": "Lingering Potion of Instant Mana",
   "item.minecraft.tipped_arrow.effect.instant_mana": "Arrow of Instant Mana",
+  "item.polarmagic.orb_of_fire": "Orb of Fire",
 
   "effect.polarmagic.instant_mana": "Instant Mana"
 }
