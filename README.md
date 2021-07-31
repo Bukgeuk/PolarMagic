@@ -1,5 +1,6 @@
 # PolarMagic
 ![example workflow](https://github.com/Bukgeuk/PolarMagic/actions/workflows/build.yml/badge.svg)
+![mc version](https://img.shields.io/badge/For%20MC-1.17.1-blue)
 
 ## Introduce
 마인크래프트 음성 인식(?) 마법 모드  
